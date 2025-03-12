@@ -99,13 +99,15 @@ app.layout = html.Div([
     dash_table.DataTable(
         id='filtered-table',
         columns=[
-            {'name': 'Country 2', 'id': 'Country 2'},
+            {'name': 'Country', 'id': 'Country 2'},
             dict(name='Co-Cluster Score', id='Co-Cluster Score', type='numeric', format=percentage),
             dict(name='Mean distance', id='Mean distance', type='numeric', format=percentage)
         ],
         fixed_rows={'headers': True, 'data': 0},
-        style_table={'overflowX': 'auto'},
-        style_cell={'textAlign': 'left', 'font-family': 'Helvetica', 'overflow': 'hidden', 'textOverflow': 'ellipsis', 'maxWidth': 50},
+        style_table={'overflowX': 'auto',
+                'maxHeight': '300px'},
+        style_cell={'textAlign': 'left', 'font-family': 'Helvetica', 'overflow': 'hidden', 
+        'textOverflow': 'ellipsis', 'maxWidth': 50},
         sort_action="native", 
         style_header={
             'backgroundColor': 'lightgrey',
@@ -122,14 +124,19 @@ app.layout = html.Div([
         id='mean-distance-table',
         
         columns=[
-            {'name': 'Country 1', 'id': 'Country 1'},
+            {'name': 'Country', 'id': 'Country 1'},
             dict(name='Mean Mean Distance', id='Mean Mean Distance', type='numeric', format=percentage)
         ],
         fixed_rows={'headers': True, 'data': 0},
         data=mean_distance_table.to_dict('records'),
-        style_table={'overflowX': 'auto'},
+        style_table={'overflowX': 'auto',
+                'maxHeight': '300px'},
         style_cell={'textAlign': 'left', 'font-family': 'Helvetica', 'overflow': 'hidden', 'textOverflow': 'ellipsis', 'maxWidth': 50, 'minWidth': 50},
-        sort_action="native"
+        sort_action="native",
+        style_header={
+            'backgroundColor': 'lightgrey',
+            'fontWeight': 'bold'
+        }
     )
 ])
 
