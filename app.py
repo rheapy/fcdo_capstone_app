@@ -67,7 +67,8 @@ app.layout = html.Div([
     html.Br(),
 
     ## PCA GRAPH
-    dcc.Graph(id='pca-graph', style={'font-family': 'Helvetica', 'height': '600px'}),
+    dcc.Graph(id='pca-graph', style={'font-family': 'Helvetica',
+    'height': '600px', 'flex': '1'}, config={'scrollZoom': True}),
 
     ## Year selector slider
     html.H4('Select year', style={'font-family': 'Helvetica'}),
