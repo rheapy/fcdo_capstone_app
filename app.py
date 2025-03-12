@@ -22,12 +22,12 @@ from sklearn.metrics import pairwise_distances
 ####################################
 ## 1. IMPORT DATA ##################
 ####################################
-pca_results = pd.read_csv('data_output/pca_results.csv')
+pca_results = pd.read_csv('Juan - UN votes/data_output/pca_results.csv')
 pca_results = pca_results[pca_results['year'] >= 1990]
 
 pca_results['cluster'] = pca_results['cluster'].astype('category') 
 
-association_scores = pd.read_csv('data_output/association_scores.csv') 
+association_scores = pd.read_csv('Juan - UN votes/data_output/association_scores.csv') 
 
 mean_distance_table = association_scores.groupby('Country 1')['Mean distance'].mean().reset_index()
 mean_distance_table = mean_distance_table.rename(columns={'Mean distance': 'Mean Mean Distance'})
@@ -147,6 +147,12 @@ def update_figure(gdp_range, pop_range, year):
             }
         }, 
         margin = dict(t = 200),
+        xaxis=dict(
+            showticklabels=False,
+        ),
+        yaxis=dict(
+            showticklabels=False,
+        ),
         legend_title_text = 'Continent',
     )
     return fig
@@ -159,13 +165,10 @@ def update_table(selected_country):
     filtered_df = association_scores[association_scores['Country 1'] == selected_country].copy()
     return filtered_df.to_dict('records')
 
-
-
 if __name__ == '__main__':
     app.run(debug=True)
 
 #######
-
 
 
 
@@ -177,8 +180,9 @@ if __name__ == '__main__':
 #print(f"Total Correlation between Co-Cluster Score and Mean Distance: {correlation:.2f}")
 
 
-### Separate votes by country 
+### Separate votes by country # most impurtant votes?
 ## Agregarle botón para seleccionar que países resaltar desde la lista completa para any givren year
 # eso hay q hacerlo en das
 
-## Tabla con mean mean distance por pais (más alto  = pais menos asociativo)
+# Mezclar todas las aplicaciones 
+
