@@ -22,12 +22,12 @@ from sklearn.metrics import pairwise_distances
 ####################################
 ## 1. IMPORT DATA ##################
 ####################################
-pca_results = pd.read_csv('Juan - UN votes/data_output/pca_results.csv')
+pca_results = pd.read_csv('data_output/pca_results.csv')
 pca_results = pca_results[pca_results['year'] >= 1990]
 
 pca_results['cluster'] = pca_results['cluster'].astype('category') 
 
-association_scores = pd.read_csv('Juan - UN votes/data_output/association_scores.csv') 
+association_scores = pd.read_csv('data_output/association_scores.csv') 
 
 mean_distance_table = association_scores.groupby('Country 1')['Mean distance'].mean().reset_index()
 mean_distance_table = mean_distance_table.rename(columns={'Mean distance': 'Mean Mean Distance'})
