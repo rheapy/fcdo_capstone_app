@@ -182,6 +182,7 @@ def update_figure(gdp_range, pop_range, year):
             showticklabels=False,
         ),
         legend_title_text = 'Continent',
+        uirevision='constant'
     )
     return fig
 
