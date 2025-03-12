@@ -32,8 +32,6 @@ association_scores = pd.read_csv('data_output/association_scores.csv')
 mean_distance_table = association_scores.groupby('Country 1')['Mean distance'].mean().reset_index()
 mean_distance_table = mean_distance_table.rename(columns={'Mean distance': 'Mean Mean Distance'})
 
-
-
 #######################################################
 ## 2. UN PCA votes plot with year slider ##
 #######################################################
@@ -44,7 +42,10 @@ app = dash.Dash(__name__)
 percentage = FormatTemplate.percentage(2)
 
 app.layout = html.Div([
+    ## MAIN TITLE
     html.H1('UN votes in the General Assembly', style={'font-family': 'Helvetica', 'text-align': 'center'}),
+    
+    ## SLIDER TITLE (gdp)
     html.H4('Nominal GDP per capita percentile', style={'font-family': 'Helvetica'}),
     dcc.RangeSlider(
         id='gdp-slider',
@@ -53,6 +54,7 @@ app.layout = html.Div([
         value=[0, 1],
         marks={str(i): {'label': str(int(i * 100)) + '%', 'style': {'font-family': 'Helvetica'}} for i in np.arange(0, 1.01, 0.05)},
     ),
+    ## SLIDER TITLE (population)
     html.H4('Population percentile', style={'font-family': 'Helvetica'}),
     dcc.RangeSlider(
         id='pop-slider',
@@ -63,8 +65,11 @@ app.layout = html.Div([
     ),
 
     html.Br(),
+
+    ## PCA GRAPH
     dcc.Graph(id='pca-graph', style={'font-family': 'Helvetica', 'height': '600px'}),
 
+    ## Year selector slider
     html.H4('Select year', style={'font-family': 'Helvetica'}),
     dcc.Slider(
         id='year-slider',
@@ -72,11 +77,14 @@ app.layout = html.Div([
         max=pca_results['year'].max(),
         value=pca_results['year'].max(),
         marks={str(i): {'label': str(i), 'style': {'font-family': 'Helvetica', 'writing-mode': 'vertical-lr'}} for i in range(pca_results['year'].min(), pca_results['year'].max(), 1)},
-        step=1
+        step=1,
+        included=False
     ),
 
     html.Div(style={'height': '100px'}),
 
+    ## Table of relations beteween countries based on the PCA
+        # first, the selector of country button 
     html.H3("Country Pairwise Co-Cluster Table since 1990", style={'font-family': 'Helvetica'}),
     dcc.Dropdown(
         id='country-1-dropdown',
@@ -85,6 +93,9 @@ app.layout = html.Div([
         clearable=False,
         style={'font-family': 'Helvetica'}
     ),
+      html.Br(),
+    
+    ## then the table it self
     dash_table.DataTable(
         id='filtered-table',
         columns=[
@@ -92,23 +103,32 @@ app.layout = html.Div([
             dict(name='Co-Cluster Score', id='Co-Cluster Score', type='numeric', format=percentage),
             dict(name='Mean distance', id='Mean distance', type='numeric', format=percentage)
         ],
+        fixed_rows={'headers': True, 'data': 0},
         style_table={'overflowX': 'auto'},
-        style_cell={'textAlign': 'left', 'font-family': 'Helvetica'},
-        sort_action="native"
+        style_cell={'textAlign': 'left', 'font-family': 'Helvetica', 'overflow': 'hidden', 'textOverflow': 'ellipsis', 'maxWidth': 50},
+        sort_action="native", 
+        style_header={
+            'backgroundColor': 'lightgrey',
+            'fontWeight': 'bold'
+
+        }
     ), 
     
     html.Br(), 
 
+    ## Table with the mean of distance of a country with all the rest. 
     html.H3("Mean Mean Distance Table", style={'font-family': 'Helvetica'}),
     dash_table.DataTable(
         id='mean-distance-table',
+        
         columns=[
             {'name': 'Country 1', 'id': 'Country 1'},
             dict(name='Mean Mean Distance', id='Mean Mean Distance', type='numeric', format=percentage)
         ],
+        fixed_rows={'headers': True, 'data': 0},
         data=mean_distance_table.to_dict('records'),
         style_table={'overflowX': 'auto'},
-        style_cell={'textAlign': 'left', 'font-family': 'Helvetica'},
+        style_cell={'textAlign': 'left', 'font-family': 'Helvetica', 'overflow': 'hidden', 'textOverflow': 'ellipsis', 'maxWidth': 50, 'minWidth': 50},
         sort_action="native"
     )
 ])
@@ -184,5 +204,4 @@ if __name__ == '__main__':
 ## Agregarle botón para seleccionar que países resaltar desde la lista completa para any givren year
 # eso hay q hacerlo en das
 
-# Mezclar todas las aplicaciones 
-
+# Mezclar todas las aplicaciones
